@@ -1,4 +1,6 @@
 """Layer 3 - Streamlit dashboard: US Top 50 Playlist Performance & Song Popularity Trends."""
+from pathlib import Path
+
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -7,7 +9,8 @@ import streamlit as st
 from src.data_pipeline import load_all, song_features, artist_features
 from src import analytics as an
 
-DATA_PATH = "data/Atlantic_United_States.csv"
+BASE_DIR = Path(__file__).resolve().parent            # folder that contains app.py
+DATA_PATH = str(BASE_DIR / "data" / "Atlantic_United_States.csv")
 st.set_page_config(page_title="US Top 50 Analytics", page_icon="🎵", layout="wide")
 
 
@@ -20,8 +23,12 @@ def get_data():
 try:
     df_all, report = get_data()
 except FileNotFoundError:
-    st.error(f"Data file not found: `{DATA_PATH}`. Put Atlantic_United_States.csv in the `data` folder "
-             "next to app.py, and start the app from the project folder (the one containing app.py).")
+    data_dir = BASE_DIR / "data"
+    found = sorted(p.name for p in data_dir.glob("*")) if data_dir.exists() else []
+    st.error(f"Data file not found: `{DATA_PATH}`.\n\n"
+             "Make sure `data/Atlantic_United_States.csv` is committed to the repository next to `app.py` "
+             "(file names are case-sensitive on Linux servers). "
+             f"Files found in the data folder: {found if found else 'the data folder does not exist'}.")
     st.stop()
 except Exception as exc:
     st.error(f"Could not load the data: {exc}")

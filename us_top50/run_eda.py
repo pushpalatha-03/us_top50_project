@@ -1,12 +1,14 @@
 """Batch EDA: exports analysis tables to outputs/ and writes the research paper + executive summary
 (numbers are computed, so documents never drift from the data).  Usage: python run_eda.py"""
 import os
+from pathlib import Path
 import pandas as pd
 from src.data_pipeline import load_all, song_features, artist_features
 from src import analytics as an
 
-OUT = "outputs"; os.makedirs(OUT, exist_ok=True)
-df, rep = load_all("data/Atlantic_United_States.csv")
+BASE = Path(__file__).resolve().parent
+OUT = str(BASE / "outputs"); os.makedirs(OUT, exist_ok=True)
+df, rep = load_all(str(BASE / "data" / "Atlantic_United_States.csv"))
 sf, af = song_features(df), artist_features(df)
 
 # ---------- export tables
