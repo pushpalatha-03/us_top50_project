@@ -1,0 +1,12 @@
+check,value
+rows_raw,27800
+rows_clean,27752
+date_min,2024-05-18
+date_max,2025-11-27
+n_days,555
+missing_dates,4
+invalid_rank_rows,0
+missing_values,0
+duplicate_song_date,48
+duplicate_rank_date,15
+days_not_50,1
